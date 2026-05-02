@@ -1,0 +1,206 @@
+/* 1. Global Reset & Variables */
+:root {
+    --kerala-green: #2d5a27;
+    --kerala-blue: #0077be;
+    --light-bg: #f4f9f4;
+    --white: #ffffff;
+    --overlay: rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Crucial: ensures padding doesn't break layout width */
+}
+
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: var(--light-bg); 
+    scroll-behavior: smooth; 
+    color: #333;
+}
+
+/* 2. Navigation Bar */
+.navbar { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    padding: 0 50px; 
+    height: 70px;
+    background: var(--white); 
+    position: fixed; 
+    width: 100%; 
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--kerala-green);
+}
+
+.navbar ul { 
+    display: flex; 
+    list-style: none; 
+    gap: 30px; 
+}
+
+.navbar a { 
+    text-decoration: none; 
+    color: var(--kerala-green); 
+    font-weight: 600; 
+    transition: color 0.3s;
+}
+
+.navbar a:hover {
+    color: var(--kerala-blue);
+}
+
+/* 3. Hero Section (FIXED PATH HERE) */
+.hero { 
+    height: 80vh; 
+    margin-top: 70px; /* Space for fixed navbar */
+    /* Use ../ to go out of 'css' folder into 'static', then into 'images' */
+    background: linear-gradient(var(--overlay), var(--overlay)), 
+                url("../images/login.jpg") center/cover no-repeat; 
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    color: var(--white); 
+    text-align: center; 
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+/* 4. Sections & Grid */
+.section { 
+    padding: 80px 50px; 
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--kerala-green);
+}
+
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px; 
+    padding: 20px;
+}
+
+/* 5. Destination Cards */
+.card { 
+    background: var(--white); 
+    border-radius: 12px; 
+    overflow: hidden; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    cursor: pointer; 
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.card:hover { 
+    transform: translateY(-10px); 
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
+}
+
+.card img { 
+    width: 100%; 
+    height: 200px; 
+    object-fit: cover; 
+}
+
+.card-info { 
+    padding: 20px; 
+}
+
+.card-info h3 {
+    margin-bottom: 8px;
+    color: var(--kerala-green);
+}
+
+/* 6. Chatbot UI */
+#chat-icon { 
+    position: fixed; 
+    bottom: 30px; 
+    right: 30px; 
+    font-size: 30px; 
+    background: var(--kerala-green); 
+    color: var(--white); 
+    padding: 15px; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+
+#chat-icon:hover {
+    transform: scale(1.1);
+}
+
+#chat-window { 
+    position: fixed; 
+    bottom: 100px; 
+    right: 30px; 
+    width: 320px; 
+    height: 450px; 
+    background: var(--white); 
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+    z-index: 1001;
+}
+
+.hidden { 
+    display: none !important; 
+}
+
+.chat-header {
+    background: var(--kerala-green);
+    color: var(--white);
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.chat-messages { 
+    flex: 1; 
+    padding: 15px; 
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-input { 
+    display: flex; 
+    padding: 15px; 
+    border-top: 1px solid #eee; 
+}
+
+.chat-input input {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.chat-input button {
+    background: var(--kerala-green);
+    color: var(--white);
+    border: none;
+    padding: 0 15px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
