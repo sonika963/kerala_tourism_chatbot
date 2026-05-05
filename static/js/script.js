@@ -1,65 +1,70 @@
 /**
- * Kerala Tourism - Frontend Logic
- * * Note: fetchDestinations() was removed because we are now 
- * using Python/Jinja2 to render cards directly from the database.
+ * Kerala Tourism - Chatbot Logic
  */
 
-// 1. CHATBOT VISIBILITY TOGGLE
+// 1. Toggle Chat Window
 function toggleChat() {
     const chatWindow = document.getElementById('chat-window');
-    chatWindow.classList.toggle('hidden');
+    if (chatWindow) {
+        chatWindow.classList.toggle('hidden');
+    }
 }
 
-// 2. CHATBOT COMMUNICATION
+// 2. Send Message to Flask
 async function sendMessage() {
     const input = document.getElementById('user-input');
+    const chatMessages = document.getElementById('chat-messages');
     const msg = input.value.trim();
     
-    // Don't send empty messages
     if (!msg) return;
 
-    const chatMessages = document.getElementById('chat-messages');
-    
-    // Append User Message to UI
+    // Display User Message
     chatMessages.innerHTML += `
-        <div class="user-msg">
-            <span class="sender">You:</span> ${msg}
+        <div class="user-msg" style="margin-bottom: 10px; text-align: right;">
+            <span style="background: #e1ffc7; padding: 8px; border-radius: 10px; display: inline-block;">
+                <strong>You:</strong> ${msg}
+            </span>
         </div>`;
     
-    // Clear input immediately for better UX
-    input.value = '';
+    input.value = ''; // Clear input field
 
     try {
-        // Send message to Flask API
-        const res = await fetch('/api/chat', {
+        // Fetch from the API route in app.py
+        const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
+            body: JSON.stringify({ message: msg }) // Key "message" must match Python
         });
 
-        if (!res.ok) throw new Error("Server error");
+        if (!response.ok) throw new Error("Server error");
 
-        const data = await res.json();
+        const data = await response.json();
         
-        // Append Bot Response to UI
+        // Display Assistant Response
         chatMessages.innerHTML += `
-            <div class="bot-msg">
-                <span class="sender">Assistant:</span> ${data.reply}
+            <div class="bot-msg" style="margin-bottom: 10px; text-align: left;">
+                <span style="background: #f0f0f0; padding: 8px; border-radius: 10px; display: inline-block;">
+                    <strong>Assistant:</strong> ${data.reply}
+                </span>
             </div>`;
 
     } catch (error) {
         console.error("Chat Error:", error);
-        chatMessages.innerHTML += `<div class="bot-msg" style="color: red;">Sorry, I'm having trouble connecting right now.</div>`;
+        chatMessages.innerHTML += `
+            <div class="bot-msg" style="color: red; text-align: left; margin-bottom: 10px;">
+                ⚠️ Connection Error. Please ensure the server is running on Port 5001.
+            </div>`;
     }
     
-    // Auto-scroll to the bottom of the chat
+    // Auto-scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-// 3. EVENT LISTENERS
+// 3. Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Listen for "Enter" key in the chat input box
     const userInput = document.getElementById('user-input');
+    
+    // Listen for Enter Key
     if (userInput) {
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -67,12 +72,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-    
-    console.log(">>> JS Loaded: Chatbot ready. Destination cards handled by Python.");
 });
-
-// 4. OPTIONAL: SHOW DETAILS FUNCTION
-// This can be triggered if you added onclick="showDetails('{{ name }}')" in your HTML
-function showDetails(placeName) {
-    alert("You clicked on: " + placeName + "\nMore details coming soon!");
-}

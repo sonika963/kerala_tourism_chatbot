@@ -160,15 +160,19 @@
 </head>
 <body>
 
-    <div class="sidebar">
-        <h2>Kerala Admin</h2>
-        <ul class="nav-links">
-            <li><a href="#">📊 Dashboard</a></li>
-            <li><a href="#">👥 Manage Users</a></li>
-            <li><a href="#">📍 Destinations</a></li>
-        </ul>
-        <a href="{{ url_for('logout') }}" class="logout-btn">🚪 Logout Admin</a>
-    </div>
+   <div class="sidebar">
+    <h2>Kerala Admin</h2>
+    <ul class="nav-links">
+        <li><a href="#">📊 Dashboard</a></li>
+        <li><a href="#">👥 Manage Users</a></li>
+        <li><a href="#destinations-section">📍 Destinations</a></li>
+        <!-- ADD THESE THREE NEW LINKS -->
+        <li><a href="#culture-section">🎭 Culture (Arts)</a></li>
+        <li><a href="#food-section">🍲 Food</a></li>
+        <li><a href="#festivals-section">🎉 Festivals</a></li>
+    </ul>
+    <a href="{{ url_for('logout') }}" class="logout-btn">🚪 Logout Admin</a>
+	</div>
 
     <div class="main-content">
         <div class="header">
@@ -190,7 +194,7 @@
                 <p>{{ total_users }}</p> </div>
         </div>
 
-<div class="data-table-container">
+<div class="data-table-container" id="destinations-section">
     <h3>📍 Add New Destination</h3>
     <form class="add-form" action="/admin/add_place" method="POST">
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -216,6 +220,44 @@
         <button type="submit" class="btn-submit">Save Destination to Database</button>
     </form>
 </div>
+<!-- PLACE THIS BELOW THE DESTINATION DATA-TABLE-CONTAINER -->
+
+<!-- CULTURE SECTION -->
+<div class="data-table-container" id="culture-section">
+    <h3>🎭 Add Cultural Art Form (Kathakali, Mohiniyattam, etc.)</h3>
+    <form class="add-form" action="/admin/add_culture" method="POST">
+        <input type="hidden" name="type" value="art">
+        <input type="text" name="name" placeholder="Art Form Name" required>
+        <input type="text" name="image_url" placeholder="Image URL">
+        <textarea name="description" placeholder="Description of the art form..." rows="3" required></textarea>
+        <button type="submit" class="btn-submit">Save to Culture</button>
+    </form>
+</div>
+
+<!-- FOOD SECTION -->
+<div class="data-table-container" id="food-section">
+    <h3>🍲 Add Traditional Food (Sadya, Porotta, etc.)</h3>
+    <form class="add-form" action="/admin/add_culture" method="POST">
+        <input type="hidden" name="type" value="food">
+        <input type="text" name="name" placeholder="Dish Name" required>
+        <input type="text" name="image_url" placeholder="Image URL">
+        <textarea name="description" placeholder="Describe the food and ingredients..." rows="3" required></textarea>
+        <button type="submit" class="btn-submit">Save to Food</button>
+    </form>
+</div>
+
+<!-- FESTIVALS SECTION -->
+<div class="data-table-container" id="festivals-section">
+    <h3>🎉 Add Festival (Onam, Vishu, etc.)</h3>
+    <form class="add-form" action="/admin/add_culture" method="POST">
+        <input type="hidden" name="type" value="festival">
+        <input type="text" name="name" placeholder="Festival Name" required>
+        <input type="text" name="image_url" placeholder="Image URL">
+        <textarea name="description" placeholder="Description of the festival and its history..." rows="3" required></textarea>
+        <button type="submit" class="btn-submit">Save to Festivals</button>
+    </form>
+</div>
+
         <div class="data-table-container">
             <h3>👥 Recent Registered Users</h3>
             <table>

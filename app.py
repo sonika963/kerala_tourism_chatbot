@@ -53,6 +53,8 @@ def index():
         # 3. Get all the places the admin has added
         cursor.execute("SELECT * FROM destinations")
         all_destinations = cursor.fetchall()
+        cursor.execute("SELECT * FROM culture")
+        all_culture = cursor.fetchall()
         
         cursor.close()
         conn.close()
@@ -61,14 +63,15 @@ def index():
         # Note: we are passing 'destinations' so the HTML loop can find it
         return render_template('index.html', 
                                user_name=session.get('user_name', 'Traveler'),
-                               destinations=all_destinations)
+                               destinations=all_destinations,
+                               culture_items=all_culture)
 
     except Exception as e:
         if conn:
             conn.close()
         print(f">>> HOME PAGE ERROR: {e}")
         # If there's an error, still show the page but with an empty list
-        return render_template('index.html', destinations=[])
+        return render_template('index.html', destinations=[],culture_items=[])
 # --- 2. USER AUTHENTICATION ---
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -244,17 +247,33 @@ def get_destinations():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    user_msg = request.json.get('message', '').lower()
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT answer FROM chatbot_data WHERE %s LIKE CONCAT('%%', question, '%%')", (user_msg,))
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    
-    reply = result['answer'] if result else "That's a great question! Explore our destinations to learn more."
-    return jsonify({'reply': reply})
+    try:
+        # 1. Get the message and force it to lowercase
+        user_msg = request.json.get('message', '').lower()
+        
+        conn = get_db_connection()
+        # Remove (dictionary=True) because it's handled in get_db_connection
+        cursor = conn.cursor() 
+        
+        # 2. Execute the search
+        query = "SELECT answer FROM chatbot_data WHERE %s LIKE CONCAT('%%', question, '%%')"
+        cursor.execute(query, (user_msg,))
+        result = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        
+        # 3. Check if we found an answer
+        if result and 'answer' in result:
+            reply = result['answer']
+        else:
+            reply = "That's a great question! I'm still learning about that. Try asking about 'Munnar' or 'Food'."
+            
+        return jsonify({'reply': reply})
 
+    except Exception as e:
+        print(f"Chatbot Error: {e}")
+        return jsonify({'reply': "I'm having a little trouble thinking right now. Try again?"})
 # --- 5. LOGOUT ---
 @app.route('/logout')
 def logout():
@@ -297,7 +316,43 @@ def add_place():
         flash(f"Error adding place: {e}")
 
     return redirect(url_for('admin_dashboard'))
+@app.route('/admin/add_culture', methods=['POST'])
+def add_culture():
+    # Security check: Only admins can add culture data
+    if session.get('role') != 'admin':
+        return redirect(url_for('login'))
 
+    # Get data from the form
+    # 'type' will be 'art', 'food', or 'festival' based on which form was used
+    entry_type = request.form.get('type') 
+    name = request.form.get('name')
+    image_url = request.form.get('image_url')
+    description = request.form.get('description')
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # SQL query matching your 'culture' table structure
+        # Ensure your table has columns: type, name, description, image_url
+        query = """
+            INSERT INTO culture (type, name, description, image_url) 
+            VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(query, (entry_type, name, description, image_url))
+        
+        conn.commit()
+        cursor.close()
+        conn.close()
+        
+        flash(f"Successfully added {name} to {entry_type.capitalize()}!")
+        
+    except Exception as e:
+        print(f">>> ADD CULTURE ERROR: {e}")
+        flash(f"Error adding culture item: {e}")
+
+    return redirect(url_for('admin_dashboard'))
+	
 if __name__ == '__main__':
     try:
         print("--- Starting Server ---")

@@ -15,7 +15,7 @@
 
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    background-color: var(--light-bg); 
+    background-color: var(--kerala-green); 
     scroll-behavior: smooth; 
     color: #333;
 }
@@ -60,11 +60,11 @@ body {
 
 /* 3. Hero Section (FIXED PATH HERE) */
 .hero { 
-    height: 80vh; 
+    height: 100vh; 
     margin-top: 70px; /* Space for fixed navbar */
     /* Use ../ to go out of 'css' folder into 'static', then into 'images' */
     background: linear-gradient(var(--overlay), var(--overlay)), 
-                url("../images/login.jpg") center/cover no-repeat; 
+                url("../images/new.jpg") center/cover no-repeat; 
     display: flex; 
     flex-direction: column;
     align-items: center; 
@@ -86,7 +86,7 @@ body {
 .section h2 {
     text-align: center;
     margin-bottom: 40px;
-    color: var(--kerala-green);
+    color: var(--white);
 }
 
 .grid { 
