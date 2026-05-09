@@ -60,7 +60,7 @@ body {
 
 /* 3. Hero Section (FIXED PATH HERE) */
 .hero { 
-    height: 100vh; 
+    height: 150vh; 
     margin-top: 70px; /* Space for fixed navbar */
     /* Use ../ to go out of 'css' folder into 'static', then into 'images' */
     background: linear-gradient(var(--overlay), var(--overlay)), 
@@ -77,16 +77,172 @@ body {
     font-size: 3rem;
     margin-bottom: 10px;
 }
-
-/* 4. Sections & Grid */
-.section { 
-    padding: 80px 50px; 
+.hero-description {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9); /* Slightly transparent white for a premium feel */
+    max-width: 600px; /* Limits width so it looks like a clean paragraph */
+    margin: 25px auto; /* Centers the block and adds space around it */
+    line-height: 1.6;
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.3);
+    font-weight: 400;
 }
 
-.section h2 {
+/* --- Updated Explore Section & Grid --- */
+.explore-section { 
+    padding: 80px 50px; 
+}
+.explore btn{
+    margin-top: 10px;
+} 
+.category-box {
+    background: rgba(255, 255, 255, 0.03); /* Very subtle transparent white */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Faint gold border */
+    border-radius: 30px;
+    padding: 60px 50px;
+    margin: 40px auto;
+    max-width: 2000px; /* Keeps the box from stretching too wide */
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px); /* Optional: adds a glass-like effect */
+}
+
+/* Container spacing */
+.section-header {
     text-align: center;
-    margin-bottom: 40px;
-    color: var(--white);
+    padding: 80px 20px 40px;
+    background-color: transparent; /* Let your background image/color show through */
+}
+.section-header.hero-overlay {
+    text-align: center;
+    margin-top: -300px; /* Pulls text up into the top design */
+    position: relative;
+    z-index: 5;
+    padding-bottom: 40px;
+}
+
+/* Small label above (The "DISCOVER KERALA" part) */
+.sub-label {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 13px;
+    color: #ffffff; /* White like your nav links */
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* The Big Main Title */
+.creative-title {
+    font-family: 'Playfair Display', serif; 
+    font-size: 4.5rem; /* Large and bold like picture 2 */
+    color: #ffffff; /* Main text is white */
+    margin: 0;
+    line-height: 1.1;
+    font-weight: 700;
+}
+
+/* The Yellow/Gold word (The "Country" or "Kerala" part) */
+.creative-title .accent {
+    color: #ffb347; /* The specific orange/gold from your second picture */
+    font-style: normal; /* Keep it bold and upright */
+}
+
+/* The underline */
+.title-underline {
+    width: 80px;
+    height: 4px;
+    background: #ffb347; 
+    margin: 25px auto 0;
+    border-radius: 2px;
+}
+.explore-section h2 {
+    text-align: center;
+    color: var(--dark green); /* Keeps your original white color variable */
+    margin: 0;
+}
+
+/* The Grid Container */
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Card Design based on your shared Image */
+.dest-card {
+    position: relative;
+    border-radius: 30px;
+    overflow: hidden;
+    cursor: pointer;
+    height: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.dest-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.category-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: #38bdf8; /* Blue accent color */
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 5;
+}
+
+.dest-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
+    color: white;
+    padding: 20px;
+    transition: 0.4s;
+}
+
+.description-content {
+    max-height: 0;
+    opacity: 0;
+    overflow-y: auto;
+    transition: opacity 0.5s ease;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 1.5;
+    padding-right: 5px;
+}
+
+/* ACTIVE STATE: This triggers when JavaScript adds the .active class */
+.dest-card.active .description-content {
+    max-height: 180px;
+    opacity: 1;
+    margin-top: 10px;
+}
+
+/* OPTIONAL: Make the scrollbar look thin and clean (Rocket AI style) */
+.description-content::-webkit-scrollbar {
+    width: 4px;
+}
+.description-content::-webkit-scrollbar-thumb {
+    background: #38bdf8; 
+    border-radius: 10px;
+}
+
+.dest-card.active img {
+    transform: scale(1.1);
+    filter: brightness(50%);
 }
 
 .grid { 
@@ -146,40 +302,38 @@ body {
 }
 
 #chat-window { 
-    position: fixed; 
-    bottom: 100px; 
-    right: 30px; 
-    width: 320px; 
-    height: 450px; 
-    background: var(--white); 
-    border-radius: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-    display: flex; 
-    flex-direction: column; 
-    overflow: hidden; 
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    width: 320px;
+    height: 450px;        /* Ensure the total window has a set height */
+    backdrop-filter:blur(10px);
+    display: flex;
+    flex-direction: column; /* This stacks Header, Chat-Box, and Input vertically */
+    background: rgba(255,255,255,0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     z-index: 1001;
+    overflow: hidden;    /* Keeps everything inside the rounded corners */
 }
 
 .hidden { 
     display: none !important; 
 }
 
-.chat-header {
-    background: var(--kerala-green);
+.chat-header-green{
+    background: #2d4d2d;
     color: var(--white);
     padding: 15px;
-    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     text-align: center;
 }
+.header-main { display: flex; align-items: center; gap: 10px; }
+.header-text { display: flex; flex-direction: column; }
+.header-text small { font-size: 10px; opacity: 0.8; }
 
-.chat-messages { 
-    flex: 1; 
-    padding: 15px; 
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
 
 .chat-input { 
     display: flex; 
@@ -203,4 +357,175 @@ body {
     margin-left: 5px;
     border-radius: 5px;
     cursor: pointer;
+}
+#chat-messages {
+    flex: 1;  
+    gap :10px;          /* This tells the box to take up all available middle space */
+    overflow-y: auto;     /* Enables the scrollbar */
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ddd;
+    height:auto;
+    background: #f9f9f9;
+    border-top:1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+.chat-suggestions {
+    padding: 10px;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+.chat-suggestions button {
+    background: #e8f5e9;
+    border: 1px solid #2d4d2d;
+    color: #2d4d2d;
+    border-radius: 15px;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.chat-input-area {
+    padding: 15px;
+    background: white;
+    display: flex;
+    gap: 10px;
+}
+#user-input {
+    flex: 1;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    padding: 8px 15px;
+    outline: none;
+}
+
+#send-btn {
+    background: #2d4d2d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+/* MODERN SLEEK FOOTER */
+.site-footer {
+    background-color: #0f172a; /* Deep Navy/Black (Rocket Style) */
+    color: #94a3b8; /* Subtle Grey Text */
+    padding: 80px 40px 30px 40px;
+    font-family: 'Inter', sans-serif;
+    border-top: 1px solid #1e293b;
+    margin-top: 80px;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+}
+
+.footer-brand {
+    flex: 1;
+    min-width: 300px;
+}
+
+.footer-brand .logo {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer-brand p {
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 300px;
+}
+
+.footer-group {
+    display: flex;
+    gap: 60px;
+    flex: 2;
+    justify-content: flex-end;
+}
+
+.footer-col h4 {
+    color: #f8fafc;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 12px;
+}
+
+.footer-col ul li a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+    color: #38bdf8; /* Sky blue highlight like AI apps */
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 60px auto 0 auto;
+    padding-top: 25px;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+}
+/* These three classes ensure perfect centering */
+.footer-left, .footer-status {
+    flex: 1; /* These grow equally to push the middle part to the center */
+}
+
+.footer-copyright {
+    flex: 2; /* Takes up the middle space */
+    text-align: center;
+    color: #94a3b8;
+}
+
+.footer-status {
+    text-align: right; /* Keeps the status on the right */
+    color: #94a3b8;
+}
+
+.status-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #22c55e; /* Green online status */
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+/* Mobile Fix: Stack them when screen is small */
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    .footer-status, .footer-left {
+        text-align: center;
+    }
 }

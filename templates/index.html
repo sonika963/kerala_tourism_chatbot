@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Kerala | Tourism & Culture</title>
+    <title>Discover Kerala | Tourism & Culture</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -22,90 +22,224 @@
 
     <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Experience God's Own Country</h1>
-            <p>Discover Tourist places and hidden gems.</p>
-            <button onclick="document.getElementById('explore').scrollIntoView()">Explore Now</button>
+             <div class="hero-overlay-text"></div>
+             <span class="sub-label">Discover Kerala Destinations</span>
+              <h2 class="creative-title">God's Own <span class="accent">Country</span>Awaits You</h2>
+            <div class="title-underline"></div>
+            <p class="hero-description">
+                From misty tea hills of Munnar to serene backwaters of Alleppey <br>
+                — Kerala offers 600km of coastline, ancient art forms, and flavors that linger forever.
+            </p>
+            <button class="explore-btn" onclick="document.getElementById('explore').scrollIntoView()">Explore Now</button>
+            </div>
         </div>
     </section>
 
-    <section id="explore" class="section">
-        <h2>Explore Destinations</h2>
-        <div class="grid" id="destinations-grid">
-            {% for destination in destinations %}
-            <div class="card">
-                <img src="/{{ destination.image_url }}" alt="{{ destination.name }}" style="width:100%; border-radius: 10px;">
+   <section id="explore" class="explore-section">
+    <div class="category-box">
+    <div class="section-header">
+    <span class="sub-label">Top Destinations</span>
+    <h2 class="creative-title">Explore <span class="accent">Destinations</span>Awaits You</h2>
+    <div class="title-underline"></div>
+</div>
+
+
+    <div class="destinations-grid">
+        {% for destination in destinations %}
+        <div class="dest-card" onclick="toggleDescription(this)">
+            <div class="category-tag">{{ destination.category }}</div>
+            
+            <img src="/{{ destination.image_url }}" alt="{{ destination.name }}">
+            
+            <div class="dest-info">
+                <h3>{{ destination.name }}</h3>
+                <p class="location-text">📍 {{ destination.location }}</p>
                 
-                <div class="card-content" style="padding: 15px;">
-                    <h3>{{ destination.name }}</h3>
-                    <p><strong>Category:</strong> {{ destination.category }}</p>
-                    <p><strong>Location:</strong> {{ destination.location }}</p>
+                <div class="description-content">
                     <p>{{ destination.description }}</p>
                     <p><small>Best time: {{ destination.best_time }}</small></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </section>
-    <!-- CULTURE SECTION -->
-    <section id="culture" class="section">
-        <h2>Traditional Art Forms</h2>
-        <div class="grid">
-            {% for item in culture_items if item.type == 'art' %}
-            <div class="card">
-                <img src="{{ item.image_url }}" alt="{{ item.name }}" style="width:100%; border-radius: 10px;">
-                <div class="card-content" style="padding: 15px;">
-                    <h3>{{ item.name }}</h3>
+        {% endfor %}
+    </div>
+    </div>
+</section>
+
+   <!-- CULTURE SECTION -->
+    <section id="culture" class="explore-section">
+         <div class="category-box">
+    <div class="section-header">
+        <span class="sub-label">Heritage & Arts</span>
+        <h2 class="creative-title">Traditional <span class="accent">Art Forms</span></h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="destinations-grid">
+        {% for item in culture_items if item.type == 'art' %}
+        <div class="dest-card" onclick="toggleDescription(this)">
+            <div class="category-tag">Art Form</div>
+            
+            <img src="/{{ item.image_url }}" alt="{{ item.name }}">
+            
+            <div class="dest-info">
+                <h3>{{ item.name }}</h3>
+                
+                <div class="description-content">
                     <p>{{ item.description }}</p>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </section>
+        {% endfor %}
+    </div>
+    </div>
+</section>
 
     <!-- FOOD SECTION -->
-    <section id="food" class="section">
-        <h2>Taste of Kerala</h2>
-        <div class="grid">
-            {% for item in culture_items if item.type == 'food' %}
-            <div class="card">
-                <img src="{{ item.image_url }}" alt="{{ item.name }}" style="width:100%; border-radius: 10px;">
-                <div class="card-content" style="padding: 15px;">
-                    <h3>{{ item.name }}</h3>
+    <section id="food" class="explore-section">
+    <div class="category-box">
+    <div class="section-header">
+        <span class="sub-label">Culinary Journey</span>
+        <h2 class="creative-title">Taste of <span class="accent">Kerala</span></h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="destinations-grid">
+        {% for item in culture_items if item.type == 'food' %}
+        <div class="dest-card" onclick="toggleDescription(this)">
+            <div class="category-tag">Cuisine</div>
+            
+            <img src="/{{ item.image_url }}" alt="{{ item.name }}">
+            
+            <div class="dest-info">
+                <h3>{{ item.name }}</h3>
+                
+                <div class="description-content">
                     <p>{{ item.description }}</p>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </section>
+        {% endfor %}
+    </div>
+    </div>
+</section>
 
     <!-- FESTIVALS SECTION -->
-    <section id="festival" class="section">
-        <h2>Grand Festivals</h2>
-        <div class="grid">
-            {% for item in culture_items if item.type == 'festival' %}
-            <div class="card">
-                <img src="{{ item.image_url }}" alt="{{ item.name }}" style="width:100%; border-radius: 10px;">
-                <div class="card-content" style="padding: 15px;">
-                    <h3>{{ item.name }}</h3>
+    <section id="festival" class="explore-section">
+    <div class="category-box">
+    <div class="section-header">
+        <span class="sub-label">Vibrant Celebrations</span>
+        <h2 class="creative-title">Grand <span class="accent">Festivals</span></h2>
+        <div class="title-underline"></div>
+    </div>
+
+    <div class="destinations-grid">
+        {% for item in culture_items if item.type == 'festival' %}
+        <div class="dest-card" onclick="toggleDescription(this)">
+            <div class="category-tag">Festival</div>
+            
+            <img src="/{{ item.image_url }}" alt="{{ item.name }}">
+            
+            <div class="dest-info">
+                <h3>{{ item.name }}</h3>
+                
+                <div class="description-content">
                     <p>{{ item.description }}</p>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </section>
+        {% endfor %}
+    </div>
+    </div>
+</section>
 
     <div id="chatbot-container">
-        <div id="chat-icon" onclick="toggleChat()">🍃</div>
-        <div id="chat-window" class="hidden">
-            <div class="chat-header">Kerala Assistant</div>
-            <div id="chat-messages"></div>
-            <div class="chat-input">
-                <input type="text" id="user-input" placeholder="Ask me anything...">
-                <button onclick="sendMessage()">Send</button>
+    <div id="chat-icon" onclick="toggleChat()">🌿</div>
+    
+    <div id="chat-window" class="hidden">
+        <div class="chat-header-green">
+            <div class="header-main">
+                <span class="leaf-logo">🌿</span>
+                <div class="header-text">
+                    <strong>Kera</strong>
+                    <small>Always here to help</small>
+                </div>
+            </div>
+            <button class="close-btn" onclick="toggleChat()">×</button>
+        </div>
+
+        <div id="chat-messages"></div>
+
+        <div class="chat-suggestions" class="chat-suggestions">
+            <button class="pill" onclick="sendSuggestion('Munnar')">Munnar</button>
+            <button class="pill" onclick="sendSuggestion('Hidden places')">Hidden places</button>
+            <button class="pill" onclick="sendSuggestion('festival')">Festival</button>
+            <button  class="pill" onclick="sendSuggestion('Kerala food')">Kerala food</button>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="user-input" placeholder="Ask about Kerala...">
+            <button id="send-btn" onclick="sendMessage()">▲</button>
+        </div>
+    </div>
+</div>
+    </div>
+
+    <footer class="site-footer">
+    <div class="footer-top">
+        <div class="footer-brand">
+            <div class="logo">Explore Kerala</div>
+            <p>Experience the tranquility of God's Own Country. Your premium guide to tourism, culture, and cuisine.</p>
+            <div class="social-icons">
+                <span>Follow us:</span><br>
+                <a href="#">FaceBook</a> <br>
+                <a href="#">Instagram</a> <br>
+                <a href="#">Twitter</a> <br>
+            </div>
+        </div>
+
+        <div class="footer-group">
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#explore">Destinations</a></li>
+                    <li><a href="#culture">Culture</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#explore">Destinations</a></li>
+                    <li><a href="#food">Kerala Food</a></li>
+                    <li><a href="#festival">Festivals</a></li>
+                    <li><a href="#culture">Culture</a></li>
+                </ul>
             </div>
         </div>
     </div>
 
+    <div class="footer-bottom">
+    <div class="footer-left">
+        </div>
+    
+    <div class="footer-copyright">
+        &copy; 2026 Kerala Tourism Platform. All Rights Reserved.
+    </div>
+    
+    <div class="footer-status">
+        <span class="status-dot"></span> System Status: Online
+    </div>
+</div>
+</footer>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

@@ -245,35 +245,39 @@ def get_destinations():
     conn.close()
     return jsonify(data)
 
+
+
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
-        # 1. Get the message and force it to lowercase
         user_msg = request.json.get('message', '').lower()
-        
         conn = get_db_connection()
-        # Remove (dictionary=True) because it's handled in get_db_connection
-        cursor = conn.cursor() 
         
-        # 2. Execute the search
-        query = "SELECT answer FROM chatbot_data WHERE %s LIKE CONCAT('%%', question, '%%')"
-        cursor.execute(query, (user_msg,))
-        result = cursor.fetchone()
-        
+        # Use DictCursor so we can use row['answer']
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+        # 1. Fetch everything from your table
+        cursor.execute("SELECT question, answer FROM chatbot_data")
+        records = cursor.fetchall()
+
+        # Default fallback if no keyword matches
+        reply = "I am not sure about it! Try asking about 'Munnar', 'food', or 'festivals'."
+
+        # 2. Check if a keyword from your DB is inside the user's message
+        for row in records:
+            # If the user mentioned "munnar" or "food" (the 'question' column)
+            if row['question'].lower() in user_msg:
+                reply = row['answer']
+                break
+
         cursor.close()
         conn.close()
-        
-        # 3. Check if we found an answer
-        if result and 'answer' in result:
-            reply = result['answer']
-        else:
-            reply = "That's a great question! I'm still learning about that. Try asking about 'Munnar' or 'Food'."
-            
         return jsonify({'reply': reply})
 
     except Exception as e:
         print(f"Chatbot Error: {e}")
-        return jsonify({'reply': "I'm having a little trouble thinking right now. Try again?"})
+        return jsonify({'reply': "I'm having a little trouble thinking right now."})
+    
 # --- 5. LOGOUT ---
 @app.route('/logout')
 def logout():
@@ -352,6 +356,26 @@ def add_culture():
         flash(f"Error adding culture item: {e}")
 
     return redirect(url_for('admin_dashboard'))
+
+@app.route('/destinations')
+def all_destinations():
+    # Security check (optional, but good for consistency)
+    if 'user_id' not in session and 'admin_id' not in session:
+        return redirect(url_for('login'))
+        
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM destinations")
+        all_dests = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        
+        # This will look for a file called all_destinations.html in your templates folder
+        return render_template('all_destinations.html', destinations=all_dests)
+    except Exception as e:
+        print(f"Error loading destinations page: {e}")
+        return redirect(url_for('index'))
 	
 if __name__ == '__main__':
     try:
